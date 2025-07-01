@@ -1,68 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Your Cart – HyperCart</title>
-  <style>
-    body { font-family: sans-serif; padding: 1rem; background: #f4f4f4; }
-    .cart-item { background: #fff; margin: 1rem 0; padding: 1rem; border-radius: 8px; }
-    .checkout { margin-top: 2rem; }
-    button {
-      background: #6772e5;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Business Ecosystem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .card-content {
+            line-height: 1.6;
+            color: #4a5568;
+        }
+        
+        .card ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .phase {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .phase:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .phase h4 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .phase-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .metrics {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .metrics h3 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .metric {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .interactive-note {
+            background: #fef5e7;
+            border: 2px solid #f6ad55;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            color: #744210;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .ecosystem-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Your Cart</h1>
-  <div id="cart"></div>
-
-  <div class="checkout">
-    <button id="checkout-btn">Checkout with Stripe</button>
-  </div>
-
-  <script>
-    const cartContainer = document.getElementById('cart');
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-
-    function renderCart() {
-      if (cartItems.length === 0) {
-        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-        return;
-      }
-
-      cartItems.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <h3>${item.name}</h3>
-          <p>Price: $${item.price.toFixed(2)}</p>
-          <p>Quantity: ${item.quantity}</p>
-        `;
-        cartContainer.appendChild(div);
-      });
-    }
-
-    renderCart();
-
-    document.getElementById('checkout-btn').addEventListener('click', () => {
-      fetch('http://localhost:3000/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cartItems })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-          window.location.href = data.url; // Go to Stripe Checkout
+    <div class="container">
+        <h1>🚀 Amazon-Style Marketplace Ecosystem</h1>
+        
+        <div class="ecosystem-grid">
+            <div class="card" onclick="toggleContent(this)">
+                <h3><span class="icon">💰</span>Funding Strategy</h3>
+                <div class="card-content">
+                    <strong>Initial Capital Required: $5-50M+</strong>
+                    <ul>
+                        <li><strong>Seed Round ($2-5M):</strong> MVP development, initial team</li>
+                        <li><strong>Series A ($10-25M):</strong> Platform scaling, user acquisition</li>
+                        <li><strong>Series B+ ($25-100M+):</strong> Market expansion, logistics</li>
+                    </ul>
+                    <p><strong>Key Investors:</strong> VCs specializing in marketplaces (Andreessen Horowitz, Sequoia, Bessemer Venture Partners)</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="toggleContent(this)">
+                <h3><span class="icon">🔧</span>Technology Stack</h3>
+                <div class="card-content">
+                    <strong>Core Infrastructure</strong>
+                    <ul>
+                        <li><strong>Backend:</strong> AWS/Azure cloud, microservices architecture</li>
+                        <li><strong>Database:</strong> PostgreSQL + Redis for caching</li>
+                        <li><strong>Search:</strong> Elasticsearch for product discovery</li>
+                        <li><strong>Payments:</strong> Stripe, PayPal integration</li>
+                        <li><strong>AI/ML:</strong> Recommendation engines, fraud detection</li>
+                    </ul>
+                    <p><strong>Development Cost:</strong> $500K-2M for robust platform</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="toggleContent(this)">
+                <h3><span class="icon">🏭</span>Supply Chain & Logistics</h3>
+                <div class="card-content">
+                    <strong>Multi-Modal Approach</strong>
+                    <ul>
+                        <li><strong>Seller Network:</strong> Onboard 1000+ sellers initially</li>
+                        <li><strong>Fulfillment:</strong> Partner with 3PLs, build warehouses</li>
+                        <li><strong>Shipping:</strong> FedEx, UPS, DHL partnerships</li>
+                        <li><strong>Returns:</strong> Automated return processing system</li>
+                    </ul>
+                    <p><strong>Initial Setup:</strong> $2-10M for fulfillment infrastructure</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="toggleContent(this)">
+                <h3><span class="icon">👥</span>Team & Operations</h3>
+                <div class="card-content">
+                    <strong>Core Team (50-100 people)</strong>
+                    <ul>
+                        <li><strong>Engineering:</strong> 20-30 developers, DevOps, QA</li>
+                        <li><strong>Product:</strong> PM, UX/UI designers, data analysts</li>
+                        <li><strong>Business:</strong> Sales, partnerships, operations</li>
+                        <li><strong>Marketing:</strong> Digital marketing, content, PR</li>
+                        <li><strong>Support:</strong> Customer service, seller support</li>
+                    </ul>
+                    <p><strong>Annual Payroll:</strong> $8-15M+ depending on location</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="toggleContent(this)">
+                <h3><span class="icon">📈</span>Marketing & Growth</h3>
+                <div class="card-content">
+                    <strong>Multi-Channel Strategy</strong>
+                    <ul>
+                        <li><strong>Digital Ads:</strong> Google, Facebook, TikTok ($2-5M/year)</li>
+                        <li><strong>SEO/Content:</strong> Organic traffic, blog content</li>
+                        <li><strong>Partnerships:</strong> Affiliate programs, influencers</li>
+                        <li><strong>PR:</strong> Launch events, media coverage</li>
+                    </ul>
+                    <p><strong>Customer Acquisition Cost:</strong> $50-200 per customer</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="toggleContent(this)">
+                <h3><span class="icon">⚖️</span>Legal & Compliance</h3>
+                <div class="card-content">
+                    <strong>Regulatory Framework</strong>
+                    <ul>
+                        <li><strong>Business Structure:</strong> Delaware C-Corp for funding</li>
+                        <li><strong>E-commerce Laws:</strong> Consumer protection, data privacy</li>
+                        <li><strong>Tax Compliance:</strong> Multi-state sales tax</li>
+                        <li><strong>IP Protection:</strong> Trademarks, patents</li>
+                        <li><strong>International:</strong> GDPR, international shipping laws</li>
+                    </ul>
+                    <p><strong>Legal Costs:</strong> $200K-500K annually</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="metrics">
+            <h3>📊 Target Metrics for Success</h3>
+            <div class="metrics-grid">
+                <div class="metric">
+                    <div class="metric-value">$10M+</div>
+                    <div class="metric-label">GMV Year 1</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">100K+</div>
+                    <div class="metric-label">Active Buyers</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">5K+</div>
+                    <div class="metric-label">Active Sellers</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">15-20%</div>
+                    <div class="metric-label">Take Rate</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <div class="phase">
+                <h4><span class="phase-number">1</span>Pre-Launch (Months 1-6)</h4>
+                <ul>
+                    <li>Secure initial funding ($5-10M)</li>
+                    <li>Build core team (20-30 people)</li>
+                    <li>Develop MVP platform</li>
+                    <li>Onboard initial seller cohort</li>
+                    <li>Beta testing with select users</li>
+                </ul>
+            </div>
+            
+            <div class="phase">
+                <h4><span class="phase-number">2</span>Launch (Months 7-12)</h4>
+                <ul>
+                    <li>Public platform launch</li>
+                    <li>Marketing campaign launch</li>
+                    <li>Scale to 1K+ sellers</li>
+                    <li>Process first 10K orders</li>
+                    <li>Iterate based on user feedback</li>
+                </ul>
+            </div>
+            
+            <div class="phase">
+                <h4><span class="phase-number">3</span>Scale (Year 2)</h4>
+                <ul>
+                    <li>Series A funding ($15-25M)</li>
+                    <li>Expand to new categories</li>
+                    <li>Build fulfillment network</li>
+                    <li>International expansion planning</li>
+                    <li>Advanced features (AI, mobile app)</li>
+                </ul>
+            </div>
+            
+            <div class="phase">
+                <h4><span class="phase-number">4</span>Dominate (Year 3+)</h4>
+                <ul>
+                    <li>Market leadership in niche</li>
+                    <li>Series B+ funding ($50M+)</li>
+                    <li>Global expansion</li>
+                    <li>Adjacent services (advertising, logistics)</li>
+                    <li>IPO preparation or acquisition</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="interactive-note">
+            <strong>💡 Next Steps:</strong> Click on any card above to dive deeper into that component. 
+            This ecosystem is designed for ambitious scale - adjust based on your specific niche and resources!
+        </div>
+    </div>
+    
+    <script>
+        function toggleContent(card) {
+            const content = card.querySelector('.card-content');
+            const allCards = document.querySelectorAll('.card');
+            
+            // Reset all cards
+            allCards.forEach(c => {
+                if (c !== card) {
+                    c.style.background = 'white';
+                    c.style.transform = 'none';
+                }
+            });
+            
+            // Highlight selected card
+            if (card.style.background === 'white' || !card.style.background) {
+                card.style.background = 'linear-gradient(135deg, #f0f8ff, #e6f3ff)';
+                card.style.transform = 'scale(1.02)';
+                
+                // Add a subtle animation to the content
+                content.style.animation = 'fadeIn 0.5s ease-in';
+            } else {
+                card.style.background = 'white';
+                card.style.transform = 'none';
+            }
         }
-      });
-    });
-  </script>
+        
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0.7; }
+                to { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add some interactive hover effects
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 15px 35px rgba(102, 126, 234, 0.2)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                if (this.style.background === 'white' || !this.style.background) {
+                    this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
