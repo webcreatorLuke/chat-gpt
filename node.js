@@ -1,34 +1,37 @@
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const express = require('express');
+const app = express();
+const stripe = require('stripe')('sk_test_YOUR_SECRET_KEY'); // Replace with your real secret key
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-function updateCartCount() {
-  document.getElementById('cart-count').textContent = cart.length;
-}
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
-function loadProducts() {
-  fetch('products.json')
-    .then(res => res.json())
-    .then(products => {
-      const list = document.getElementById('product-list');
-      list.innerHTML = '';
-      products.forEach(product => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.innerHTML = `
-          <img src="${product.image}" alt="${product.name}"/>
-          <h3>${product.name}</h3>
-          <p>$${product.price.toFixed(2)}</p>
-          <button onclick="addToCart(${product.id})">Add to Cart</button>
-        `;
-        list.appendChild(div);
-      });
-    });
-}
+// 🧾 Create Checkout Session
+app.post('/create-checkout-session', async (req, res) => {
+  const cartItems = req.body.items;
+  const lineItems = cartItems.map(item => ({
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: item.name,
+        images: [item.image],
+      },
+      unit_amount: Math.round(item.price * 100),
+    },
+    quantity: item.quantity,
+  }));
 
-function addToCart(id) {
-  cart.push(id);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
-}
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: lineItems,
+    mode: 'payment',
+    success_url: 'http://localhost:3000/success.html',
+    cancel_url: 'http://localhost:3000/cancel.html',
+  });
 
-updateCartCount();
-loadProducts();
+  res.json({ url: session.url });
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
