@@ -1,16 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "RGB Gaming Keyboard",
-    "price": 89.99,
-    "image": "https://via.placeholder.com/200",
-    "description": "Mechanical keyboard with full RGB backlight."
-  },
-  {
-    "id": 2,
-    "name": "Wireless Earbuds",
-    "price": 39.99,
-    "image": "https://via.placeholder.com/200",
-    "description": "Noise-cancelling true wireless earbuds."
-  }
-]
+
