@@ -1,15 +1,68 @@
-<script>
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart – HyperCart</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; background: #f4f4f4; }
+    .cart-item { background: #fff; margin: 1rem 0; padding: 1rem; border-radius: 8px; }
+    .checkout { margin-top: 2rem; }
+    button {
+      background: #6772e5;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Cart</h1>
+  <div id="cart"></div>
 
-  document.getElementById('checkout-btn').addEventListener('click', () => {
-    fetch('/create-checkout-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart })
-    })
-    .then(res => res.json())
-    .then(data => {
-      window.location = data.url;
+  <div class="checkout">
+    <button id="checkout-btn">Checkout with Stripe</button>
+  </div>
+
+  <script>
+    const cartContainer = document.getElementById('cart');
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    function renderCart() {
+      if (cartItems.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      cartItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>Price: $${item.price.toFixed(2)}</p>
+          <p>Quantity: ${item.quantity}</p>
+        `;
+        cartContainer.appendChild(div);
+      });
+    }
+
+    renderCart();
+
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      fetch('http://localhost:3000/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cartItems })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+          window.location.href = data.url; // Go to Stripe Checkout
+        }
+      });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
