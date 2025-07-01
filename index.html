@@ -1,32 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Create Your Product</title>
-</head>
-<body>
-  <h1>Create Your Own Product</h1>
+<script>
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-  <form>
-    <label>Product Name:<br>
-      <input type="text" name="productName" required>
-    </label><br><br>
-
-    <label>Description:<br>
-      <textarea name="description" rows="4" cols="40" required></textarea>
-    </label><br><br>
-
-    <label>Price:<br>
-      <input type="number" name="price" step="0.01" required>
-    </label><br><br>
-
-    <label>Image URL:<br>
-      <input type="url" name="image" required>
-    </label><br><br>
-
-    <button type="submit">Create Product</button>
-  </form>
-
-  <p><i>This is just a form — it doesn't actually save the product since HTML can't do that alone.</i></p>
-</body>
-</html>
+  document.getElementById('checkout-btn').addEventListener('click', () => {
+    fetch('/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: cart })
+    })
+    .then(res => res.json())
+    .then(data => {
+      window.location = data.url;
+    });
+  });
+</script>
